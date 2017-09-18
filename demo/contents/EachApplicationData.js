@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView,ListView,View,Button,TouchableOpacity,TouchableHighlight} from 'react-native';
 import { List, ListItem } from 'react-native-elements';
-// import SocketIOClient from 'socket.io-client/dist/socket.io';
 const styles = StyleSheet.create({
   textStyle: {
     fontSize:30,
@@ -65,44 +64,27 @@ const styles = StyleSheet.create({
 
 });
 import {Actions} from "react-native-router-flux";
-// import App from '../App';
+import moment from 'moment';
 export default class EachApplicationData extends React.Component{
-  // static navigationOptions = {
-  //   title: '20 Jul 2017',
-  //   headerStyle: { backgroundColor: 'black' ,marginTop: 20},
-  //   headerTitleStyle: { color: 'white', textAlign: 'center', alignSelf: 'center' }
-  // };
 
-  static get contextTypes() {
-        return {
-          socket:React.PropTypes.object.isRequired
-        }
-      }
-      click=()=>{
-
-        // this.socket = SocketIOClient('http://localhost:3000');
-         this.context.socket.emit('notification','HI');
-           alert('clicked');
-      }
   render(){
-    //  const {navigate}  = this.props.navigation;
-
+  let dates=  moment().format('DD-MMM-YYYY')
+     dates=dates.replace(/-/g,' ');
     return(
-
       <ScrollView>
-
              <View style={styles.container}>
                <List>
-
                <ListItem
                  title="Application Number"
-                 subtitle={this.props.ApplicantNumber}
-                 onPress={this.click }
+                 subtitle={this.props.datas.applicationNumber}
+                 onPress={() =>
+           Actions.ApplicationDetails({applicationNumber: this.props.datas.applicationNumber,title: dates})
+         }
                />
            </List>
           </View>
 
            </ScrollView>
-)
+      )
   }
 }

@@ -65,16 +65,18 @@ const styles = StyleSheet.create({
 
 });
 import { StackNavigator } from 'react-navigation';
+import moment from 'moment';
 export default class ApplicationView extends React.Component{
 
+
   render(){
-    // const {navigate} =this.props.navigation;
-    let ComponentData=this.props.data.map((data,i)=>{
+    let dates= moment().format('DD-MMM-YYYY');
+     dates=dates.replace(/-/g,' ');
+    let ComponentData=this.props.data.map((data)=>{
       return(
         <EachApplicationData
-          key={i}
-          ApplicantNumber={data.ApplicantNumber}
-          Location={data.Location}
+          key={data.id}
+          datas={data}
           >
         </EachApplicationData>
       )
@@ -82,8 +84,8 @@ export default class ApplicationView extends React.Component{
     return(
 
         <View  style={{borderBottomColor: 'grey',borderBottomWidth: 0.2,}}>
-             <Text style={styles.textStyle}>20 Jul 2017</Text>
-
+             <Text style={styles.textStyle}>{dates}</Text>
+             <Text></Text>
       {ComponentData}
       </View>
     )

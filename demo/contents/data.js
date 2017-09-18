@@ -3,10 +3,9 @@ export const users = [
             "id": 0,
             "applicationNumber": "#3456840",
             "location":'Bangalore',
-            "Schedule": {
                "start": '4:00hrs',
-               "End": '8:00hrs'
-            },
+               "End": '8:00hrs',
+            "OpNumber":'3783687368-790701',
 
          },
          {
@@ -15,8 +14,9 @@ export const users = [
             "location":'Hyderabad',
             "Schedule": {
                "start": '4:00hrs',
-               "End": '8:00hrs'
+               "End": '8:00hrs',
             },
+            "OpNumber":'3783687368-790702',
          },
          {
             "id": 2,
@@ -24,8 +24,9 @@ export const users = [
             "location":'Chennai',
             "Schedule": {
                "start": '4:00hrs',
-               "End": '8:00hrs'
+               "End": '8:00hrs',
             },
+            "OpNumber":'3783687368-790703',
          },
          {
             "id": 3,
@@ -33,7 +34,8 @@ export const users = [
             "location":'Pune',
             "Schedule": {
                "start": '4:00hrs',
-               "End": '8:00hrs'
+               "End": '8:00hrs',
             },
+            "OpNumber":'3783687368-790704',
          }
       ];

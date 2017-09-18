@@ -2,17 +2,32 @@ import React from 'react';
 import { StyleSheet, Text, ScrollView,View,Button,TouchableOpacity,TouchableHighlight} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { users } from './data';
+import { Icon, } from 'react-native-elements';
+import {Actions} from "react-native-router-flux";
+import moment from 'moment';
 import ApplicationFullDetail from './ApplicationFullDetail';
 class ApplicationDetails extends React.Component {
 
   state={
-    appData:[]
+    appData:[],
   }
   static navigationOptions = {
-    title: '20 Jul 2017',
-    headerStyle: { backgroundColor: 'black' ,marginTop: 20},
+    headerStyle: { backgroundColor: 'black',paddingTop:22,height:75},
     headerTitleStyle: { color: 'white', textAlign: 'center', alignSelf: 'center' },
-    headerRight: <Button title='call' />,
+    headerLeft: <TouchableHighlight style={{height:50, width:60, }} onPress={() => Actions.pop()}>
+       <View style={{marginTop:10,}}><Icon
+          name="chevron-left"
+          size={30}
+          color={'white'}                                                                                                         
+        /></View>
+     </TouchableHighlight>,
+     headerRight: <TouchableHighlight style={{backgroundColor:'#88DA6C',height:50, width:60, }}>
+       <View style={{marginTop:10}}><Icon
+          name="phone"
+          size={30}
+          color={'white'}          
+        /></View>
+     </TouchableHighlight>,
   };
 
   componentDidMount=()=>{
@@ -24,12 +39,8 @@ class ApplicationDetails extends React.Component {
   }
 
   render() {
-    // alert(this.props.applicationNumber);
-    // const { navigate } = this.props.navigation;
-    //  const { applicationNumber, location, Schedule } = this.props.navigation.state.params;
     return (
       <View>
-        <Text>Application Details</Text>
         <ApplicationFullDetail data={this.state.appData} />
       </View>
     );
@@ -63,3 +74,8 @@ const styles = StyleSheet.create({
   },
 
 });
+
+
+
+
+// if(data.applicationNumber==this.props.applicationNumber)

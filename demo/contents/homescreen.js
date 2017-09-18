@@ -5,61 +5,38 @@ import { List, ListItem } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import Accordion from 'react-native-collapsible/Accordion';
 import { users } from './data';
+import { Icon, } from 'react-native-elements';
 import ApplicationView from './ApplicationView';
-import Axios from 'axios';
 
 export default class HomeScreen extends React.Component{
 state={
-  jobData:[]
+  data:[]
 }
-static get contextTypes() {
-    return {
-      socket:React.PropTypes.object.isRequired
-    }
-  }
+  static navigationOptions = {
+    // title: 'Upcoming Jobs',
+    headerStyle: { backgroundColor: 'black',paddingTop:22,height:75},
+    headerTitleStyle: { color: 'white', textAlign: 'center', alignSelf: 'center' },
+    headerLeft: <TouchableHighlight style={{height:50, width:60, }}>
+       <View style={{marginTop:10,}}><Icon
+          name="menu"
+          size={30}
+          color={'white'}
 
-componentDidMount=()=>{
-  // var myRequest = new Request('http://localhost:8080/api/v1/Job', {method: 'GET'});
-  // fetch(myRequest)
-  //   .then(function(response) {
-  //       if(response.status == 200) return response.json();
-  //       else throw new Error('Something went wrong on api server!');
-  //   })
-  //   .then(function(response) {
-  //       console.debug(response);
-  //       // ...
-  //   })
-  //   .catch(function(error) {
-  //       console.error(error);
-  //   });
-  // fetch('http://localhost:8080/api/v1/Job')
-  // .then(function(response) {
-  //   console.log(response);
-  //   alert('dnoe');
-  //   // return response.json();
-  // })
-  Axios.get('http://192.168.0.102:3000/api/v1/Job')
-  	  .then(function (data) {
-  	    console.log('jobDetail connected to server');
-  	    // console.log(data);
-  	    // console.log(data.data.message);
-  	    this.setState({jobData:data.data.message});
-  	  }.bind(this))
-  	  .catch(function (error) {
-  	    console.log(error+"error in jobDetail");
-  	  });
-
-      this.context.socket.on('approvalConfirmation', (msg) => {
-        // this.setState({chatmessage:msg.data});
-          // console.log('Queued');
-          // this.setState({openDialogue: msg.status,dialogueMessage:msg.message});
-          alert(msg.message);
-        });
-}
+        /></View>
+     </TouchableHighlight>,
+     headerRight: <TouchableHighlight style={{backgroundColor:'#88DA6C',height:50, width:60, }}>
+       <View style={{marginTop:10,}}><Icon
+          name="phone"
+          size={30}
+          color={'white'}
+          
+        /></View>
+     </TouchableHighlight>,
+  };
   render(){
     return(
     <View>
-    <ApplicationView data={this.state.jobData} />
+    <ApplicationView data={users} />
     </View>
   )
   }
