@@ -67,6 +67,16 @@ import {Actions} from "react-native-router-flux";
 import moment from 'moment';
 export default class EachApplicationData extends React.Component{
 
+  // static get contextTypes() {
+  //       return {
+  //         socket:React.PropTypes.object.isRequired
+  //       }
+  //     }
+  //
+  // InitiateJobBtn=()=>{
+  //   this.context.socket.emit('InitiateJobRequest','Job has been initiated');
+  // }
+
   render(){
   let dates=  moment().format('DD-MMM-YYYY')
      dates=dates.replace(/-/g,' ');
@@ -76,9 +86,8 @@ export default class EachApplicationData extends React.Component{
                <List>
                <ListItem
                  title="Application Number"
-                 subtitle={this.props.datas.applicationNumber}
-                 onPress={() =>
-           Actions.ApplicationDetails({applicationNumber: this.props.datas.applicationNumber,title: dates})
+                 subtitle={this.props.applicationID}
+                 onPress={() => Actions.ApplicationDetails({applicationNumber: this.props.applicationID,title: dates})
          }
                />
            </List>

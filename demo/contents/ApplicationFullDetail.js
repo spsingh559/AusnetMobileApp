@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView,View,Button,TouchableOpacity,TouchableHighlight,TextInput,Linking} from 'react-native';
+import { StyleSheet, Text, ScrollView,View,Button,TouchableOpacity,TouchableHighlight,TextInput,Linking,KeyboardAvoidingView} from 'react-native';
 import {Actions} from "react-native-router-flux";
 import moment from 'moment';
 import { Icon, } from 'react-native-elements';
+
 export default class ApplicationFullDetail extends React.Component{
 	constructor(props) {
     super(props);
@@ -10,30 +11,83 @@ export default class ApplicationFullDetail extends React.Component{
     this.state = {rcName: ''};
     this.state = {version: ''};
   }
-  render(){
+	static get contextTypes() {
+	      return {
+	        socket:React.PropTypes.object.isRequired
+	      }
+	    }
+
+	submitApplicationDetail=()=>{
+
+		var today = new Date();
+		var time = today.getHours() + ":" + today.getMinutes();
+		console.log('time is'+ time);
+
+
+
+		let obj={
+			requestType:'InitiateJobRequest',
+			applicationID:this.props.data.applicationID,
+			operatorName:this.state.opName,
+			operatorContactNumber:'8722455007',
+			recepientName:this.state.rcName,
+			recepientContactNumber:'9865503834',
+			operatingAuthNo:this.props.data.operatingAuthNo+this.state.version,
+			applicationActiveStatus:true,
+			JobProgress:[
+				{  stepID:1, name:'Job Initiated',   time:time,      status:true  	 },
+				{   stepID:2,   name:'CEOT Approval',      time:'N/A',      status:false    	 },
+				{      stepID:3, name:'Interuption Time Started',      time:'N/A',      status:false    	 },
+				{ stepID:4,     name:'Isolation and Earthing Done',     time:'N/A',      status:false 	 },
+				{   stepID:5,   name:'Issue Permit',      time:'N/A',      status:false   	 },
+				{     stepID:6, name:'Work Started',     time:'N/A',      status:false  	 },
+				{  stepID:7,  name:'Work Completed',    time:'N/A',      status:false    	 },
+				{ stepID:8,     name:'Cancel Permit',     time:'N/A',      status:false  	 },
+				{ stepID:9,     name:'Isolation and Earthing Removed',     time:'N/A',      status:false  	 },
+				{ stepID:10,  name:'Interruption Time Ended',     time:'N/A',      status:false }]
+		}
+		this.props.operatorData(obj);
+		this.setState({opName:'',rcName:'',version:''});
 		let dates=  moment().format('DD-MMM-YYYY')
-			 dates=dates.replace(/-/g,' ');
+	     dates=dates.replace(/-/g,' ');
+			 obj.startTime=this.props.data.startTime;
+			 obj.endTime=this.props.data.endTime;
+			 obj.location=this.props.data.location;
+			 this.context.socket.emit('InitiateJobRequest',obj.applicationID);
+			 let notificationString = obj.applicationID +','+ 'Job Initiated'+',' + time;
+			 this.context.socket.emit('InitiateJobNotification', notificationString);
+		Actions.ResponsePage({applicationData:obj,title: dates})
+		// console.log(obj);
+		// alert('button clicked');
+	}
+  render(){
+		// let dates=  moment().format('DD-MMM-YYYY')
+		// 	 dates=dates.replace(/-/g,' ');
     return(
+			<KeyboardAvoidingView
+      behavior="padding"
+			// style={{flex:1}}
+      >
     	<ScrollView>
 	      <View>
 	      	<Text style={styles.headerContentText}>Application Number</Text>
-	        <Text style={styles.ContentText}>{this.props.data.applicationNumber}</Text>
+	        <Text style={styles.ContentText}>{this.props.data.applicationID}</Text>
 	        <Text style={styles.headerContentText}>Schedule</Text>
-	        <Text style={styles.ContentText}>Start:{this.props.data.start}</Text>
-	        <Text style={styles.ContentText}>End:{this.props.data.End}</Text>
+	        <Text style={styles.ContentText}>Start:{this.props.data.startTime}</Text>
+	        <Text style={styles.ContentText}>End:{this.props.data.endTime}</Text>
 	        <Text style={styles.headerContentText}>Location</Text>
 	        <Text style={styles.ContentTextLocation} onPress={() => Linking.openURL('http://googlemaps.com')}>{this.props.data.location}</Text>
 	        <Text style={styles.separator}></Text>
 	        <Text style={styles.headerContentText}>Operator Name</Text>
-	        <TextInput style={styles.textInput}
+	        <TextInput underlineColorAndroid="transparent" style={styles.textInput}
           		onChangeText={(opName) => this.setState({opName})} />
 	        <Text style={styles.headerContentText}>Recipient Name</Text>
-	        <TextInput style={styles.textInput}
+	        <TextInput underlineColorAndroid="transparent" style={styles.textInput}
           		onChangeText={(rcName) => this.setState({rcName})}/>
 	        <Text style={styles.headerContentText}>Operating Authority Number</Text>
 	        <View style={{justifyContent:'flex-start',flexDirection:'row'}}>
-	        	<Text style={styles.Content}>{this.props.data.OpNumber} -</Text>
-		        <TextInput style={styles.textInputVersion}
+	        	<Text style={styles.Content}>{this.props.data.operatingAuthNo} -</Text>
+		        <TextInput underlineColorAndroid="transparent" style={styles.textInputVersion}
 	          		onChangeText={(version) => this.setState({version})}/>
 	    		<Icon
 	        		name="check-circle"
@@ -43,14 +97,13 @@ export default class ApplicationFullDetail extends React.Component{
 	    		/>
         	</View>
         	<TouchableHighlight style={styles.submitButton}
-        		onPress={() =>
-        			Actions.ResponsePage({applicationNumber:this.props.data.applicationNumber,
-        								OperatorName:this.state.opName,Version:this.state.version,
-        								title:dates})}>
+        		onPress={this.submitApplicationDetail}>
+
         		<Text style={styles.submitText}>Submit</Text>
     		</TouchableHighlight>
 	      </View>
        </ScrollView>
+		 </KeyboardAvoidingView>
     )
   }
 }

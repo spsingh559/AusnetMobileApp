@@ -1,17 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView,View,Button,TouchableOpacity,TouchableHighlight,TextInput,Linking} from 'react-native';
+import { StyleSheet, Text, ScrollView,View,Button,TouchableOpacity,TouchableHighlight,TextInput,Linking,Modal, Image} from 'react-native';
 import {Actions} from "react-native-router-flux";
 import moment from 'moment';
 import { Icon, } from 'react-native-elements';
 import StickyHeaderFooterScrollView from 'react-native-sticky-header-footer-scroll-view';
 export default class WaitingforApprovalPage extends React.Component{
-	constructor(props) {
-    super(props);
-     this.state = {opName: ''};
-    this.state = {rcName: ''};
-    this.state = {version: ''};
-    this.state = {status:false};
-  }
+	// constructor(props) {
+  //   super(props);
+  //
+  //   this.state = {status:false};
+  // }
+	state={
+		status:false,
+		modalVisible: false
+	}
 
 	static get contextTypes() {
         return {
@@ -20,9 +22,14 @@ export default class WaitingforApprovalPage extends React.Component{
       }
 	componentDidMount=()=>{
 		this.context.socket.on('approvalConfirmation', (msg) => {
-			this.setState({status:true});
-				alert(msg.message);
+			this.setState({status:true,modalVisible:true});
+				// alert(msg.message);
+
 			});
+	}
+	navigateJobProgress=()=>{
+		this.setState({modalVisible:false});
+		Actions.JobProgressScreen({applicationNumber: this.props.data.applicationID});
 	}
 
   render(){
@@ -30,7 +37,7 @@ export default class WaitingforApprovalPage extends React.Component{
     	<ScrollView >
 	      <View>
 	      	<Text style={styles.headerContentText}>Application Number</Text>
-	        <Text style={styles.ContentText}>{this.props.data.applicationNumber}</Text>
+	        <Text style={styles.ContentText}>{this.props.data.applicationID}</Text>
 
 	        	<Text style={styles.headerContentText}>
 	        		Application Authority Number
@@ -38,7 +45,7 @@ export default class WaitingforApprovalPage extends React.Component{
 
 
         	<View style={{justifyContent:'flex-start',flexDirection:'row'}}>
-	        <Text style={styles.Content}>{`${this.props.data.OpNumber}${' -  '}${this.props.version}`}</Text>
+	        <Text style={styles.Content}>{this.props.data.operatingAuthNo}</Text>
 	        <Icon
 	        		name="check-circle"
 	        		size={30}
@@ -47,12 +54,12 @@ export default class WaitingforApprovalPage extends React.Component{
         		/>
 	        </View>
 	        <Text style={styles.headerContentText}>Schedule</Text>
-	        <Text style={styles.ContentText}>Start:{this.props.data.start}</Text>
-	        <Text style={styles.ContentText}>End:{this.props.data.start}</Text>
+	        <Text style={styles.ContentText}>Start:{this.props.data.startTime}</Text>
+	        <Text style={styles.ContentText}>End:{this.props.data.endTime}</Text>
 	        <Text style={styles.headerContentText}>Location</Text>
 	        <Text style={styles.ContentTextLocation} onPress={() => Linking.openURL('http://googlemaps.com')}>{this.props.data.location}</Text>
 	        <Text style={styles.headerContentText}>Operator Name</Text>
-	        <Text style={styles.ContentText}>{this.props.opName}</Text>
+	        <Text style={styles.ContentText}>{this.props.data.operatorName}</Text>
 	        <Text style={styles.headerContentText}>Approval Status</Text>
 	        <Text style={styles.ContentText}>{ this.state.status ?  <Text style={{color:'green'}}> CEOT Approved</Text> :
 	        					   <Text style={{color:'red'}}>Waiting CEOT Approval </Text> } </Text>
@@ -62,7 +69,29 @@ export default class WaitingforApprovalPage extends React.Component{
 												 : <TouchableHighlight style={styles.submitButton} disabled={true}>
 							        		<Text style={styles.submitText}>Start Job</Text>
 							    		</TouchableHighlight>}
-	      </View>
+
+	        <Modal
+	          animationType="fade"
+	          transparent={false}
+	          visible={this.state.modalVisible}
+	          onRequestClose={() => {alert("Modal has been closed.")}}
+	          >
+	         <View style={styles.modal}>
+	          <View style={styles.dialogBox}>
+	            <Text style={styles.header}>Approval Granted</Text>
+	            <Image
+	              style={styles.imageStyle}
+	              source={{ uri: 'https://canadian-passport-support.com/wp-content/uploads/2014/09/businessman.png' }}
+	            />
+	            <Text style={styles.infotext}>The job has been approved by the Jacob Rasmus from CEOT.</Text>
+	            <Text style={styles.seperator}></Text>
+	            <TouchableHighlight onPress={this.navigateJobProgress}>
+	              <Text style={styles.footer}>Start Job</Text>
+	            </TouchableHighlight>
+	          </View>
+	         </View>
+	        </Modal>
+					</View>
        </ScrollView>
     )
   }
@@ -75,6 +104,51 @@ const styles = StyleSheet.create({
 	    paddingTop:15,
 	    paddingLeft:15,
 	},
+	modal : {
+    flex:1,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:"rgba(0,0,0,0.7)",
+  },
+  header:{
+    fontWeight:'500',
+    fontSize:18,
+  },
+    footer:{
+    fontWeight:'500',
+    fontSize:18,
+    color:'#58D0FD',
+  },
+  infotext:{
+    textAlign:'center',
+    fontSize:18,
+  },
+  imageStyle:{
+    width: 100,
+    borderRadius:60,
+    height: 100,
+    marginTop:5,
+    marginBottom:5,
+    borderWidth: 0.5,
+    borderColor:'black',
+  },
+  seperator:{
+    marginBottom: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+  },
+  dialogBox:{
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'#EBE9E8',
+    width:270,
+    paddingTop:10,
+    paddingBottom:20,
+    paddingLeft:20,
+    paddingRight:20,
+    borderRadius:15
+},
 	// headerContent: {
 	//     fontSize: 18,
 	//     fontWeight: '500',

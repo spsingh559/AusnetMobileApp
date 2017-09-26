@@ -32,6 +32,7 @@ import { StackNavigator } from 'react-navigation';
 import HomeScreen from './contents/homescreen';
 import ApplicationDetails from './contents/applicationDetails';
 import ResponsePage from './contents/ResponsePage';
+import JobProgressScreen from './contents/JobProgressScreen';
 import { Icon, } from 'react-native-elements';
 import moment from 'moment';
 import {Router,Stack,Scene} from "react-native-router-flux";
@@ -48,8 +49,9 @@ const App = () => (
     <Stack key="root">
       	<Scene key="home" component={HomeScreen} title='Upcoming Jobs'/>
 		<Scene key="ApplicationDetails" component={ApplicationDetails} title='' type='push'/>
-		<Scene key="ResponsePage" component={ResponsePage} title='' type='push'/>
 
+		<Scene key="ResponsePage" component={ResponsePage} title='' type='push'/>
+    <Scene key="JobProgressScreen" component={JobProgressScreen} title='Job Progress' type='push'/>
     </Stack>
   </Router>
 </ContextComponent>

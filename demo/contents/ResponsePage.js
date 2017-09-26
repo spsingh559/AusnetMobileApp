@@ -15,35 +15,35 @@ export default class ResponsePage extends React.Component{
 	static navigationOptions = {
 	    headerStyle: { backgroundColor: 'black',paddingTop:22,height:75},
 	    headerTitleStyle: { color: 'white', textAlign: 'center', alignSelf: 'center' },
-	    headerLeft: <TouchableHighlight style={{height:50, width:60, }} onPress={() => Actions.pop()}>
+	    headerLeft: <TouchableHighlight style={{height:50, width:60, }}>
 	       	<View style={{marginTop:10,}}><Icon
-	          	name="chevron-left"
+	          	name="menu"
 	          	size={30}
-	          	color={'white'}                                                                                                         
+	          	color={'white'}
 	        	/></View>
 	     	</TouchableHighlight>,
 	    headerRight: <TouchableHighlight style={{backgroundColor:'#88DA6C',height:50, width:60, }}>
 	        <View style={{marginTop:10}}><Icon
 	          	name="phone"
 	          	size={30}
-	          	color={'white'}          
+	          	color={'white'}
 	        	/></View>
 	     	</TouchableHighlight>,
 	  	};
-	componentDidMount=()=>{
-	    users.forEach((data)=>{
-	      if(data.applicationNumber==this.props.applicationNumber){
-	        this.setState({appData:data});
-	        this.setState({opName:this.props.OperatorName});
-	        this.setState({version:this.props.Version});
-	      }
-	    })
-
-	  }
+	// componentDidMount=()=>{
+	//     users.forEach((data)=>{
+	//       if(data.applicationNumber==this.props.applicationData.applicationID){
+	//         this.setState({appData:data});
+	//         this.setState({opName:this.props.OperatorName});
+	//         this.setState({version:this.props.Version});
+	//       }
+	//     })
+	//
+	//   }
 	render() {
 		return(
 			<View>
-				<WaitingforApprovalPage data={this.state.appData} opName={this.state.opName} version={this.state.version} />
+				<WaitingforApprovalPage data={this.props.applicationData} />
 			</View>
 			)
 	}

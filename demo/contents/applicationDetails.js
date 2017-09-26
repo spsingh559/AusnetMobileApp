@@ -6,6 +6,7 @@ import { Icon, } from 'react-native-elements';
 import {Actions} from "react-native-router-flux";
 import moment from 'moment';
 import ApplicationFullDetail from './ApplicationFullDetail';
+import Axios from 'axios';
 class ApplicationDetails extends React.Component {
 
   state={
@@ -14,34 +15,68 @@ class ApplicationDetails extends React.Component {
   static navigationOptions = {
     headerStyle: { backgroundColor: 'black',paddingTop:22,height:75},
     headerTitleStyle: { color: 'white', textAlign: 'center', alignSelf: 'center' },
-    headerLeft: <TouchableHighlight style={{height:50, width:60, }} onPress={() => Actions.pop()}>
+    headerLeft: <TouchableHighlight style={{height:50, width:60, }} >
        <View style={{marginTop:10,}}><Icon
-          name="chevron-left"
+          name="menu"
           size={30}
-          color={'white'}                                                                                                         
+          color={'white'}
         /></View>
      </TouchableHighlight>,
      headerRight: <TouchableHighlight style={{backgroundColor:'#88DA6C',height:50, width:60, }}>
        <View style={{marginTop:10}}><Icon
           name="phone"
           size={30}
-          color={'white'}          
+          color={'white'}
         /></View>
      </TouchableHighlight>,
   };
 
   componentDidMount=()=>{
-    users.forEach((data)=>{
-      if(data.applicationNumber==this.props.applicationNumber){
-        this.setState({appData:data});
-      }
-    })
+    console.log('componentDidMount called for applicationDetails');
+    console.log(this.props.applicationNumber);
+    Axios.get('http://192.168.43.208:8080/api/v1/Job/'+'NotStarted')
+        .then(function (data) {
+          // console.log(data.data.message);
+          data.data.message.forEach((data)=>{
+            if(data.applicationID==this.props.applicationNumber){
+              this.setState({appData:data})
+            }
+          })
+          // this.setState({jobData:data.data.message});
+          // console.log(this.state.jobData);
+          // this.setState({jobDetailArr:this.state.jobData[0]});
+        }.bind(this))
+        .catch(function (error) {
+          console.log(error+"error in jobDetail for status");
+        });
+    // users.forEach((data)=>{
+    //   if(data.applicationNumber==this.props.applicationNumber){
+    //     this.setState({appData:data});
+    //   }
+    // })
+  }
+
+  operatorData=(obj)=>{
+    console.log(obj);
+    Axios({
+  method: 'patch',
+  url: 'http://192.168.43.208:8080/api/v1/Job/',
+  data: obj
+})
+.then(function (data) {
+  console.log('response from server');
+  // console.log(data);
+}.bind(this))
+.catch(function (error) {
+  console.log(error+"error in jobDetail for status");
+});
+
   }
 
   render() {
     return (
       <View>
-        <ApplicationFullDetail data={this.state.appData} />
+        <ApplicationFullDetail data={this.state.appData} operatorData={this.operatorData}/>
       </View>
     );
   }

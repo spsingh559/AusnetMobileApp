@@ -72,22 +72,26 @@ export default class ApplicationView extends React.Component{
   render(){
     let dates= moment().format('DD-MMM-YYYY');
      dates=dates.replace(/-/g,' ');
-    let ComponentData=this.props.data.map((data)=>{
+    let ComponentData=this.props.data.map((data,i)=>{
       return(
         <EachApplicationData
-          key={data.id}
-          datas={data}
+          key={data.applicationID}
+          applicationID={data.applicationID}
+          index={i}
           >
         </EachApplicationData>
       )
     })
     return(
-
+      <ScrollView>
         <View  style={{borderBottomColor: 'grey',borderBottomWidth: 0.2,}}>
              <Text style={styles.textStyle}>{dates}</Text>
-             <Text></Text>
+
+
       {ComponentData}
+
       </View>
+      </ScrollView>
     )
   }
 }

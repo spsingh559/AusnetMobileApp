@@ -5,38 +5,49 @@ import { List, ListItem } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import Accordion from 'react-native-collapsible/Accordion';
 import { users } from './data';
-import { Icon, } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import ApplicationView from './ApplicationView';
+import Axios from 'axios';
 
 export default class HomeScreen extends React.Component{
 state={
-  data:[]
+  jobData:[]
 }
+
+  componentDidMount=()=>{
+    console.log('componentDidMount called');
+    Axios.get('http://192.168.43.208:8080/api/v1/Job/'+'NotStarted')
+        .then(function (data) {
+          // console.log(data.data.message);
+          this.setState({jobData:data.data.message});
+          // console.log(this.state.jobData);
+          // this.setState({jobDetailArr:this.state.jobData[0]});
+        }.bind(this))
+        .catch(function (error) {
+          console.log(error+"error in jobDetail for status");
+        });
+  }
   static navigationOptions = {
     // title: 'Upcoming Jobs',
     headerStyle: { backgroundColor: 'black',paddingTop:22,height:75},
     headerTitleStyle: { color: 'white', textAlign: 'center', alignSelf: 'center' },
-    headerLeft: <TouchableHighlight style={{height:50, width:60, }}>
-       <View style={{marginTop:10,}}><Icon
-          name="menu"
-          size={30}
-          color={'white'}
-
-        /></View>
+    headerLeft:
+    <TouchableHighlight style={{height:50, width:60, }}>
+       <View style={{marginTop:10,}}>
+         <Icon name="menu" size={30} color={'white'}/>
+       </View>
      </TouchableHighlight>,
-     headerRight: <TouchableHighlight style={{backgroundColor:'#88DA6C',height:50, width:60, }}>
-       <View style={{marginTop:10,}}><Icon
-          name="phone"
-          size={30}
-          color={'white'}
-          
-        /></View>
+     headerRight:
+     <TouchableHighlight style={{backgroundColor:'#88DA6C',height:50, width:60, }}>
+       <View style={{marginTop:10,}}>
+         <Icon name="phone" size={30} color={'white'}/>
+       </View>
      </TouchableHighlight>,
   };
   render(){
     return(
     <View>
-    <ApplicationView data={users} />
+      <ApplicationView data={this.state.jobData} />
     </View>
   )
   }
