@@ -8,7 +8,7 @@ import { users } from './data';
 import { Icon } from 'react-native-elements';
 import ApplicationView from './ApplicationView';
 import Axios from 'axios';
-
+import restURL from '../restURL';
 export default class HomeScreen extends React.Component{
 state={
   jobData:[]
@@ -16,7 +16,7 @@ state={
 
   componentDidMount=()=>{
     console.log('componentDidMount called');
-    Axios.get('http://192.168.43.208:8080/api/v1/Job/'+'NotStarted')
+    Axios.get(restURL+':8080/api/v1/Job/'+'NotStarted')
         .then(function (data) {
           // console.log(data.data.message);
           this.setState({jobData:data.data.message});

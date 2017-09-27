@@ -63,6 +63,14 @@ socket.on('InitiateJobRequest',function(msg){
 
 });
 
+socket.on('JobActivityMsg',function(msg){
+  publishClient.publish('JobActivityMsgRedis',msg);
+});
+
+socket.on('JobCompletionMsg',function(msg){
+  publishClient.publish('JobCompletionMsgRedis',msg);
+});
+
 socket.on('InitiateJobNotification',function(msg){
     // var publishClient = redis.createClient({host:'127.0.0.1',port:6379});
     // var data = msg.data;

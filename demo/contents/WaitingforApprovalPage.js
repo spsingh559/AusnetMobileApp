@@ -29,7 +29,7 @@ export default class WaitingforApprovalPage extends React.Component{
 	}
 	navigateJobProgress=()=>{
 		this.setState({modalVisible:false});
-		Actions.JobProgressScreen({applicationNumber: this.props.data.applicationID});
+		Actions.JobProgressScreen({applicationID: this.props.data.applicationID});
 	}
 
   render(){

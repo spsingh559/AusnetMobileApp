@@ -70,14 +70,19 @@ export default class ApplicationView extends React.Component{
 
 
   render(){
-    let dates= moment().format('DD-MMM-YYYY');
-     dates=dates.replace(/-/g,' ');
+    var dateobj= new Date() ;
+    var month = dateobj.getMonth() + 1;
+    var day = dateobj.getDate() ;
+    var year = dateobj.getFullYear();
+    let MonthArr=['Jan','Feb','March','April','May','June','July','August','September','October','Nov','Dec'];
+    var dates=day+ ' '+ MonthArr[month-1]+' '+ year;
     let ComponentData=this.props.data.map((data,i)=>{
       return(
         <EachApplicationData
           key={data.applicationID}
           applicationID={data.applicationID}
           index={i}
+          data={data}
           >
         </EachApplicationData>
       )

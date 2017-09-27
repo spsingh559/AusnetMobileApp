@@ -7,6 +7,7 @@ import {Actions} from "react-native-router-flux";
 import moment from 'moment';
 import ApplicationFullDetail from './ApplicationFullDetail';
 import Axios from 'axios';
+import restURL from '../restURL';
 class ApplicationDetails extends React.Component {
 
   state={
@@ -31,36 +32,28 @@ class ApplicationDetails extends React.Component {
      </TouchableHighlight>,
   };
 
-  componentDidMount=()=>{
-    console.log('componentDidMount called for applicationDetails');
-    console.log(this.props.applicationNumber);
-    Axios.get('http://192.168.43.208:8080/api/v1/Job/'+'NotStarted')
-        .then(function (data) {
-          // console.log(data.data.message);
-          data.data.message.forEach((data)=>{
-            if(data.applicationID==this.props.applicationNumber){
-              this.setState({appData:data})
-            }
-          })
-          // this.setState({jobData:data.data.message});
-          // console.log(this.state.jobData);
-          // this.setState({jobDetailArr:this.state.jobData[0]});
-        }.bind(this))
-        .catch(function (error) {
-          console.log(error+"error in jobDetail for status");
-        });
-    // users.forEach((data)=>{
-    //   if(data.applicationNumber==this.props.applicationNumber){
-    //     this.setState({appData:data});
-    //   }
-    // })
-  }
+  // componentDidMount=()=>{
+  //   console.log('componentDidMount called for applicationDetails');
+  //   console.log(this.props.applicationNumber);
+  //   Axios.get('http://192.168.43.208:8080/api/v1/Job/'+'NotStarted')
+  //       .then(function (data) {
+  //         // console.log(data.data.message);
+  //         data.data.message.forEach((data)=>{
+  //           if(data.applicationID==this.props.applicationNumber){
+  //             this.setState({appData:data})
+  //           }
+  //         })
+  //       }.bind(this))
+  //       .catch(function (error) {
+  //         console.log(error+"error in jobDetail for status");
+  //       });
+  // }
 
   operatorData=(obj)=>{
     console.log(obj);
     Axios({
   method: 'patch',
-  url: 'http://192.168.43.208:8080/api/v1/Job/',
+  url: restURL+':8080/api/v1/Job/',
   data: obj
 })
 .then(function (data) {
@@ -76,7 +69,7 @@ class ApplicationDetails extends React.Component {
   render() {
     return (
       <View>
-        <ApplicationFullDetail data={this.state.appData} operatorData={this.operatorData}/>
+        <ApplicationFullDetail data={this.props.data} operatorData={this.operatorData}/>
       </View>
     );
   }

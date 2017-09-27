@@ -37,7 +37,7 @@ export default class ApplicationFullDetail extends React.Component{
 			JobProgress:[
 				{  stepID:1, name:'Job Initiated',   time:time,      status:true  	 },
 				{   stepID:2,   name:'CEOT Approval',      time:'N/A',      status:false    	 },
-				{      stepID:3, name:'Interuption Time Started',      time:'N/A',      status:false    	 },
+				{   stepID:3, name:'Interuption Time Started',      time:'N/A',      status:false    	 },
 				{ stepID:4,     name:'Isolation and Earthing Done',     time:'N/A',      status:false 	 },
 				{   stepID:5,   name:'Issue Permit',      time:'N/A',      status:false   	 },
 				{     stepID:6, name:'Work Started',     time:'N/A',      status:false  	 },
@@ -48,8 +48,12 @@ export default class ApplicationFullDetail extends React.Component{
 		}
 		this.props.operatorData(obj);
 		this.setState({opName:'',rcName:'',version:''});
-		let dates=  moment().format('DD-MMM-YYYY')
-	     dates=dates.replace(/-/g,' ');
+		var dateobj= new Date() ;
+		var month = dateobj.getMonth() + 1;
+		var day = dateobj.getDate() ;
+		var year = dateobj.getFullYear();
+		let MonthArr=['Jan','Feb','March','April','May','June','July','August','September','October','Nov','Dec'];
+		var dates=day+ ' '+ MonthArr[month-1]+' '+ year;
 			 obj.startTime=this.props.data.startTime;
 			 obj.endTime=this.props.data.endTime;
 			 obj.location=this.props.data.location;

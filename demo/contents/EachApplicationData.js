@@ -78,8 +78,14 @@ export default class EachApplicationData extends React.Component{
   // }
 
   render(){
-  let dates=  moment().format('DD-MMM-YYYY')
-     dates=dates.replace(/-/g,' ');
+  // let dates=  moment().format('DD-MMM-YYYY')
+  //    dates=dates.replace(/-/g,' ');
+var dateobj= new Date() ;
+var month = dateobj.getMonth() + 1;
+var day = dateobj.getDate() ;
+var year = dateobj.getFullYear();
+let MonthArr=['Jan','Feb','March','April','May','June','July','August','September','October','Nov','Dec'];
+var dates=day+ ' '+ MonthArr[month-1]+' '+ year;
     return(
       <ScrollView>
              <View style={styles.container}>
@@ -87,7 +93,7 @@ export default class EachApplicationData extends React.Component{
                <ListItem
                  title="Application Number"
                  subtitle={this.props.applicationID}
-                 onPress={() => Actions.ApplicationDetails({applicationNumber: this.props.applicationID,title: dates})
+                 onPress={() => Actions.ApplicationDetails({data: this.props.data,title: dates})
          }
                />
            </List>

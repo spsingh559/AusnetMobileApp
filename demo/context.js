@@ -1,11 +1,12 @@
 import React from 'react';
  window.navigator.userAgent = 'react-native';
 import io from 'socket.io-client';
+import restURL from './restURL';
 
 export default class ContextComponent extends React.Component {
   getChildContext() {
     return {
-      socket:io('http://192.168.43.208:3000', {jsonp: false})
+      socket:io(restURL+':3000', {jsonp: false})
     }
   }
 

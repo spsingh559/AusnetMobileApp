@@ -33,6 +33,7 @@ import HomeScreen from './contents/homescreen';
 import ApplicationDetails from './contents/applicationDetails';
 import ResponsePage from './contents/ResponsePage';
 import JobProgressScreen from './contents/JobProgressScreen';
+import PermitScreen from './contents/PermitScreen';
 import { Icon, } from 'react-native-elements';
 import moment from 'moment';
 import {Router,Stack,Scene} from "react-native-router-flux";
@@ -52,6 +53,7 @@ const App = () => (
 
 		<Scene key="ResponsePage" component={ResponsePage} title='' type='push'/>
     <Scene key="JobProgressScreen" component={JobProgressScreen} title='Job Progress' type='push'/>
+      <Scene key="PermitScreen" component={PermitScreen} title='Permit Screen' type='push'/>
     </Stack>
   </Router>
 </ContextComponent>
