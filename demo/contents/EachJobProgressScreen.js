@@ -14,13 +14,13 @@ export default class EachJobProgressScreen extends React.Component{
 	    }
 
   checkFunction=()=>{
-  
-    if(this.props.stepID==5){
-    Actions.PermitScreen({applicationID:this.props.applicationID,
-      stepID:this.props.stepID,
-      name:this.props.name
-    });
-  }else{
+
+  //   if(this.props.stepID==5){
+  //   Actions.PermitScreen({applicationID:this.props.applicationID,
+  //     stepID:this.props.stepID,
+  //     name:this.props.name
+  //   });
+  // }else{
     // alert('i am going to permit page');
     var today = new Date();
     var time = today.getHours() + ":" + today.getMinutes();
@@ -40,6 +40,7 @@ export default class EachJobProgressScreen extends React.Component{
 
   };
 
+
     this.props.ProgressSubmitData(obj);
     console.log('created object is');
     console.log(obj);
@@ -47,7 +48,7 @@ export default class EachJobProgressScreen extends React.Component{
     this.context.socket.emit('InitiateJobNotification', notificationString);
     this.context.socket.emit('JobActivityMsg',obj.applicationID);
       this.setState({status:true});
-  }
+
 
   }
   render(){
@@ -65,7 +66,7 @@ export default class EachJobProgressScreen extends React.Component{
            flexDirection: 'row'
          }}>
          <List style={{flexDirection:'row'}}>
-           <Text style={{flexDirection:'column',justifyContent:'space-around'}}> {this.props.time} </Text>
+           <Text style={{flexDirection:'column',justifyContent:'space-around', marginTop:30}}> {this.props.time} </Text>
            <ListItem
               style={{width : 300, height: 80,flexDirection:'column',justifyContent:'space-around'}}
              hideChevron={true}

@@ -84,8 +84,8 @@ var dateobj= new Date() ;
 var month = dateobj.getMonth() + 1;
 var day = dateobj.getDate() ;
 var year = dateobj.getFullYear();
-let MonthArr=['Jan','Feb','March','April','May','June','July','August','September','October','Nov','Dec'];
-var dates=day+ ' '+ MonthArr[month-1]+' '+ year;
+  let MonthArr=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var dates=day+ ' '+ MonthArr[month-1]+' '+ year;
     return(
       <ScrollView>
              <View style={styles.container}>

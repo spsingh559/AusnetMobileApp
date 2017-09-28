@@ -4,6 +4,7 @@ import { List, ListItem, CheckBox,Icon } from 'react-native-elements'; // 0.16.0
 import Axios from 'axios';
 import restURL from '../restURL';
 import JobProgressDataScreen from './JobProgressDataScreen';
+import {Actions} from "react-native-router-flux";
 // import { Icon } from 'react-native-elements';
 // import "@expo/vector-icons"; // 5.2.0
 // const list = [
@@ -34,7 +35,8 @@ export default class JobProgressScreen extends Component {
   super();
   this.state = {
     jobProgressData:[],
-    animating: true
+    animating: true,
+    showButtton:false
   };
 }
 closeActivityIndicator = () =>setTimeout(() =>this.setState({
@@ -128,6 +130,9 @@ static navigationOptions = {
       console.log('final obj data ');
       console.log(newObj);
 
+      if(obj.stepID==10){
+        this.setState({showButtton:true});
+      }
     }
     static get contextTypes() {
   	      return {
@@ -155,16 +160,21 @@ static navigationOptions = {
     data: obj
     })
     .then(function (data) {
-      alert('Congratulation!! Job Has been completed');
+      // alert('Congratulation!! Job Has been completed');
     //   currentData.JobProgress=newObj.JobProgress;
     //   this.setState({jobProgressData:currentData});
     // console.log('response from server for jobProgressData');
     // console.log(data);
     // console.log(data.data.message);
+    Actions.FeedbackScreen();
     }.bind(this))
     .catch(function (error) {
     console.log(error+"error in jobDetail for status");
     });
+    }
+
+    PauseJob=()=>{
+      alert('Job has been paused by you and notified to CEOT');
     }
   render() {
     console.log('application number reach here');
@@ -198,10 +208,14 @@ static navigationOptions = {
 
 
       <View  style={styles.buttonStyle}>
-        <TouchableHighlight style={{backgroundColor:'red',height:70,alignItems:'center',justifyContent:'center'}}
+        {this.state.showButtton?<TouchableHighlight style={{backgroundColor:'green',height:70,alignItems:'center',justifyContent:'center'}}
           onPress={this.submitJob}>
-          <Text style={{color:'white',fontWeight:'500',fontSize:18,}}>Pause Job</Text>
+          <Text style={{color:'white',fontWeight:'500',fontSize:18,}}>Complete Job</Text>
         </TouchableHighlight>
+        :<TouchableHighlight style={{backgroundColor:'red',height:70,alignItems:'center',justifyContent:'center'}}
+          onPress={this.PauseJob}>
+          <Text style={{color:'white',fontWeight:'500',fontSize:18,}}>Pause Job</Text>
+        </TouchableHighlight>}
       </View>
         </ScrollView>
     </View>

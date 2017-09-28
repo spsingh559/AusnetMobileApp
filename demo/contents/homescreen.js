@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView,ListView,View,Button,TouchableOpacity,TouchableHighlight} from 'react-native';
+import { StyleSheet, Text, ScrollView,ListView,View,Button,TouchableOpacity,TouchableHighlight,ActivityIndicator} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { List, ListItem } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
@@ -11,10 +11,15 @@ import Axios from 'axios';
 import restURL from '../restURL';
 export default class HomeScreen extends React.Component{
 state={
-  jobData:[]
+  jobData:[],
+  animating:true
 }
+closeActivityIndicator = () =>setTimeout(() =>this.setState({
+      animating: false }), 1500);
+
 
   componentDidMount=()=>{
+    this.closeActivityIndicator();
     console.log('componentDidMount called');
     Axios.get(restURL+':8080/api/v1/Job/'+'NotStarted')
         .then(function (data) {
@@ -45,13 +50,50 @@ state={
      </TouchableHighlight>,
   };
   render(){
+       if(this.state.animating==true){
+         return(
+           <View style = {styles.container}>
+               <ActivityIndicator
+                  animating = {this.state.animating}
+                  color = '#bc2b78'
+                  size = "large"
+                  style = {styles.activityIndicator}/>
+            </View>
+         )
+       }else{
+
+
     return(
     <View>
       <ApplicationView data={this.state.jobData} />
     </View>
+
   )
+}
   }
 }
+const styles = StyleSheet.create({
+
+   scrollContainer: {
+    flex: 1,
+  },
+  buttonStyle:{
+    flex:1,
+    marginTop: 25
+  },
+  container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 70
+   },
+   activityIndicator: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 80
+   }
+});
 // class HomeScreen extends React.Component {
 //
 //     state = {
