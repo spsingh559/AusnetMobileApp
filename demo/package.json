@@ -36,6 +36,7 @@
     "react-native-elements": "^0.16.0",
     "react-native-icons": "^0.7.1",
     "react-native-keyboard-aware-scroll-view": "^0.3.0",
+    "react-native-phone-call": "^1.0.4",
     "react-native-router-flux": "^4.0.0-beta.21",
     "react-native-star-rating": "^1.0.8",
     "react-native-sticky-header-footer-scroll-view": "^2.0.7",

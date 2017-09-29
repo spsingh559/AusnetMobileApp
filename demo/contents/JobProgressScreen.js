@@ -62,15 +62,13 @@ static navigationOptions = {
     };
 
     componentDidMount=()=>{
-      Axios.get(restURL+':8080/api/v1/Job/')
+      let applicationID=this.props.applicationID.substring(1);
+      Axios.get(restURL+':8080/api/v1/Job/applicationID/'+applicationID)
           .then(function (data,i) {
             // onsole.log(data.data.message);
-            data.data.message.forEach((data)=>{
-              if(data.applicationID==this.props.applicationID){
-                console.log(data);
-                this.setState({jobProgressData:data});
-              }
-            })
+
+                this.setState({jobProgressData:data.data.message[0]});
+
           }.bind(this))
           .catch(function (error) {
             console.log(error+"error in jobDetail for status");

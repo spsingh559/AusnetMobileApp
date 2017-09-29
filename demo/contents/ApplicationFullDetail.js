@@ -3,6 +3,7 @@ import { StyleSheet, Text, ScrollView,View,Button,TouchableOpacity,TouchableHigh
 import {Actions} from "react-native-router-flux";
 import moment from 'moment';
 import { Icon, } from 'react-native-elements';
+import call from 'react-native-phone-call'
 
 export default class ApplicationFullDetail extends React.Component{
 	constructor(props) {
@@ -18,7 +19,12 @@ export default class ApplicationFullDetail extends React.Component{
 	    }
 
 	submitApplicationDetail=()=>{
-
+		// const args = {
+		//   number: '9093900003', // String value with the number to call
+		//   prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call
+		// }
+		//
+		// call(args).catch(console.error)
 		var today = new Date();
 		var time = today.getHours() + ":" + today.getMinutes();
 		console.log('time is'+ time);

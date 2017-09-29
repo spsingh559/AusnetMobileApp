@@ -9,6 +9,7 @@ import { Icon } from 'react-native-elements';
 import ApplicationView from './ApplicationView';
 import Axios from 'axios';
 import restURL from '../restURL';
+import call from 'react-native-phone-call'
 export default class HomeScreen extends React.Component{
 state={
   jobData:[],
@@ -21,7 +22,7 @@ closeActivityIndicator = () =>setTimeout(() =>this.setState({
   componentDidMount=()=>{
     this.closeActivityIndicator();
     console.log('componentDidMount called');
-    Axios.get(restURL+':8080/api/v1/Job/'+'NotStarted')
+    Axios.get(restURL+':8080/api/v1/Job/status/'+'NotStarted')
         .then(function (data) {
           // console.log(data.data.message);
           this.setState({jobData:data.data.message});
@@ -37,7 +38,7 @@ closeActivityIndicator = () =>setTimeout(() =>this.setState({
     headerStyle: { backgroundColor: 'black',paddingTop:22,height:75},
     headerTitleStyle: { color: 'white', textAlign: 'center', alignSelf: 'center' },
     headerLeft:
-    <TouchableHighlight style={{height:50, width:60, }}>
+    <TouchableHighlight style={{height:50, width:60, }} >
        <View style={{marginTop:10,}}>
          <Icon name="menu" size={30} color={'white'}/>
        </View>
@@ -45,10 +46,19 @@ closeActivityIndicator = () =>setTimeout(() =>this.setState({
      headerRight:
      <TouchableHighlight style={{backgroundColor:'#88DA6C',height:50, width:60, }}>
        <View style={{marginTop:10,}}>
-         <Icon name="phone" size={30} color={'white'}/>
+         <Icon name="phone" size={30} color={'white'} onPress={this.callToCEOT}/>
        </View>
      </TouchableHighlight>,
   };
+  callToCEOT=()=>{
+    console.log('calling function called');
+    const args = {
+  number: '9865503834', // String value with the number to call
+  prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call
+}
+
+call(args).catch(console.error)
+  }
   render(){
        if(this.state.animating==true){
          return(
