@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView,ListView,View,Button,TouchableOpacity,TouchableHighlight} from 'react-native';
 import { List, ListItem } from 'react-native-elements';
+import Panel from '../panel';
 const styles = StyleSheet.create({
   textStyle: {
     fontSize:30,
@@ -61,6 +62,24 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight:'500',
 },
+submitButton: {
+  backgroundColor: "#08A4D6",
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: 20,
+  marginTop: 20,
+},
+submitText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight:'500',
+},
+ContentTextLocation: {
+    fontSize: 18,
+    paddingLeft:15,
+    textDecorationLine:'underline',
+}
 
 });
 import {Actions} from "react-native-router-flux";
@@ -86,9 +105,10 @@ var day = dateobj.getDate() ;
 var year = dateobj.getFullYear();
   let MonthArr=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var dates=day+ ' '+ MonthArr[month-1]+' '+ year;
+  let header=[<Text> Application Number  </Text>];
     return(
       <ScrollView>
-             <View style={styles.container}>
+             {/* <View style={styles.container}>
                <List>
                <ListItem
                  title="Application Number"
@@ -97,7 +117,23 @@ var year = dateobj.getFullYear();
          }
                />
            </List>
-          </View>
+          </View> */}
+          <Panel title={header} subtitle={this.props.data.applicationID}>
+            <Text style={styles.headerContentText}>Application Number</Text>
+  	        <Text style={styles.ContentText}>{this.props.data.applicationID}</Text>
+  	        <Text style={styles.headerContentText}>Schedule</Text>
+  	        <Text style={styles.ContentText}>Start:{this.props.data.startTime}</Text>
+  	        <Text style={styles.ContentText}>End:{this.props.data.endTime}</Text>
+  	        <Text style={styles.headerContentText}>Location</Text>
+             <Text style={styles.ContentTextLocation}>{this.props.data.location}</Text>
+            <TouchableHighlight style={styles.initiateButton}
+              onPress={() => Actions.ApplicationDetails({data: this.props.data,title: dates})
+      }>
+
+          		<Text style={styles.submitText}>Initiate Job</Text>
+      		</TouchableHighlight>
+          {/* <Text onPress={this.click}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text> */}
+        </Panel>
 
            </ScrollView>
       )
