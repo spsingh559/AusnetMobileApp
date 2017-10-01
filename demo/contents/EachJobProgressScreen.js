@@ -15,12 +15,12 @@ export default class EachJobProgressScreen extends React.Component{
 
   checkFunction=()=>{
 
-  //   if(this.props.stepID==5){
-  //   Actions.PermitScreen({applicationID:this.props.applicationID,
-  //     stepID:this.props.stepID,
-  //     name:this.props.name
-  //   });
-  // }else{
+    if(this.props.stepID==5){
+    Actions.PermitScreen({applicationID:this.props.applicationID,
+      stepID:this.props.stepID,
+      name:this.props.name
+    });
+  }else{
     // alert('i am going to permit page');
     var today = new Date();
     var time = today.getHours() + ":" + today.getMinutes();
@@ -44,18 +44,17 @@ export default class EachJobProgressScreen extends React.Component{
     this.props.ProgressSubmitData(obj);
     console.log('created object is');
     console.log(obj);
-    let notificationString = obj.applicationID +','+ this.props.name+',' + obj.time;
-    this.context.socket.emit('InitiateJobNotification', notificationString);
-    this.context.socket.emit('JobActivityMsg',obj.applicationID);
+    
       this.setState({status:true});
 
-
+}
   }
   render(){
 // console.log('reach to EachJobProgressScreen');
 // console.log(this.props.stepID);
 // console.log(this.props.time);
 // console.log(this.props.name);
+console.log('each job Progress screen loaded');
 
   if(this.state.status==true){
     return(

@@ -30,24 +30,32 @@ export default class PermitScreen extends Component {
      </TouchableHighlight>,
   };
 
+  static get contextTypes() {
+        return {
+          socket:React.PropTypes.object.isRequired
+        }
+      }
+
 componentDidMount=()=>{
-  Axios.get(restURL+':8080/api/v1/Job/')
+  console.log('permit screen data called to server');
+  let applicationID=this.props.applicationID.substring(1);
+  Axios.get(restURL+':8080/api/v1/Job/applicationID/'+applicationID)
       .then(function (data,i) {
         // onsole.log(data.data.message);
-        data.data.message.forEach((data)=>{
-          if(data.applicationID==this.props.applicationID){
-            console.log(data);
-            console.log('response to permit screen');
-            this.setState({jobProgressData:data});
-          }
-        })
+        // data.data.message.forEach((data)=>{
+        //   if(data.applicationID==this.props.applicationID){
+        //     console.log(data);
+        //     console.log('response to permit screen');
+            this.setState({jobProgressData:data.data.message[0]});
+        //   }
+        // })
       }.bind(this))
       .catch(function (error) {
         console.log(error+"error in jobDetail for status");
       });
 }
   submitPermit=()=>{
-    alert('data submitted');
+    // alert('data submitted');
     var today = new Date();
 		var time = today.getHours() + ":" + today.getMinutes();
 
@@ -96,10 +104,14 @@ componentDidMount=()=>{
    .then(function (data) {
     //  currentData.JobProgress=newObj.JobProgress;
     //  this.setState({jobProgressData:currentData});
+    console.log(data);
    console.log('response from server for jobProgressData');
    // console.log(data);
    // console.log(data.data.message);
-   Actions.pop();
+   Actions.JobProgressScreen({applicationID: this.props.applicationID});
+   let notificationString = newObj.applicationID +','+ curretStepObj.name+',' + curretStepObj.time;
+   this.context.socket.emit('InitiateJobNotification', notificationString);
+   this.context.socket.emit('JobActivityMsg',newObj.applicationID);
    }.bind(this))
    .catch(function (error) {
    console.log(error+"error in jobDetail for status");

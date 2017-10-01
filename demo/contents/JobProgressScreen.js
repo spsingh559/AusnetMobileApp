@@ -61,6 +61,12 @@ static navigationOptions = {
       </TouchableHighlight>,
     };
 
+    static get contextTypes() {
+          return {
+            socket:React.PropTypes.object.isRequired
+          }
+        }
+
     componentDidMount=()=>{
       let applicationID=this.props.applicationID.substring(1);
       Axios.get(restURL+':8080/api/v1/Job/applicationID/'+applicationID)
@@ -102,6 +108,7 @@ static navigationOptions = {
       let newConData=stepObj.splice(curretStepObj.stepID-1,0,curretStepObj);
       newConData=null;
       // newConData[obj.stepID-1]=newConData[9];
+      console.log('final job progressData  ready for update');
       console.log(newConData);
       let newObj={
         requestType:obj.requestType,
@@ -116,6 +123,9 @@ static navigationOptions = {
     data: newObj
     })
     .then(function (data) {
+      let notificationString = obj.applicationID +','+ obj.name+',' + obj.time;
+      this.context.socket.emit('InitiateJobNotification', notificationString);
+      this.context.socket.emit('JobActivityMsg',obj.applicationID);
       currentData.JobProgress=newObj.JobProgress;
       this.setState({jobProgressData:currentData});
     console.log('response from server for jobProgressData');
@@ -132,11 +142,6 @@ static navigationOptions = {
         this.setState({showButtton:true});
       }
     }
-    static get contextTypes() {
-  	      return {
-  	        socket:React.PropTypes.object.isRequired
-  	      }
-  	    }
 
     submitJob=()=>{
       var today = new Date();

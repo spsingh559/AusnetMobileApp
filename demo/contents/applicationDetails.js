@@ -31,6 +31,12 @@ class ApplicationDetails extends React.Component {
         /></View>
      </TouchableHighlight>,
   };
+  
+  static get contextTypes() {
+	      return {
+	        socket:React.PropTypes.object.isRequired
+	      }
+	    }
 
   // componentDidMount=()=>{
   //   console.log('componentDidMount called for applicationDetails');
@@ -49,7 +55,7 @@ class ApplicationDetails extends React.Component {
   //       });
   // }
 
-  operatorData=(obj)=>{
+  operatorData=(obj,time)=>{
     console.log(obj);
     Axios({
   method: 'patch',
@@ -58,6 +64,9 @@ class ApplicationDetails extends React.Component {
 })
 .then(function (data) {
   console.log('response from server');
+  this.context.socket.emit('InitiateJobRequest',obj.applicationID);
+  let notificationString = obj.applicationID +','+ 'Job Initiated'+',' + time;
+  this.context.socket.emit('InitiateJobNotification', notificationString);
   // console.log(data);
 }.bind(this))
 .catch(function (error) {

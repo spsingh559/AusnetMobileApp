@@ -52,7 +52,7 @@ export default class ApplicationFullDetail extends React.Component{
 				{ stepID:9,     name:'Isolation and Earthing Removed',     time:'N/A',      status:false  	 },
 				{ stepID:10,  name:'Interruption Time Ended',     time:'N/A',      status:false }]
 		}
-		this.props.operatorData(obj);
+		this.props.operatorData(obj,time);
 		this.setState({opName:'',rcName:'',version:''});
 		var dateobj= new Date() ;
 		var month = dateobj.getMonth() + 1;
@@ -63,9 +63,7 @@ export default class ApplicationFullDetail extends React.Component{
 			 obj.startTime=this.props.data.startTime;
 			 obj.endTime=this.props.data.endTime;
 			 obj.location=this.props.data.location;
-			 this.context.socket.emit('InitiateJobRequest',obj.applicationID);
-			 let notificationString = obj.applicationID +','+ 'Job Initiated'+',' + time;
-			 this.context.socket.emit('InitiateJobNotification', notificationString);
+
 		Actions.ResponsePage({applicationData:obj,title: dates})
 		// console.log(obj);
 		// alert('button clicked');
