@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Text,TextInput, View, StyleSheet,TouchableHighlight } from 'react-native';
+import { Text,TextInput, View, StyleSheet,TouchableHighlight, ScrollView } from 'react-native';
 import StarRating from 'react-native-star-rating'; // 1.0.8
 import {Actions} from 'react-native-router-flux';
+import { List, ListItem, CheckBox,Icon } from 'react-native-elements'; // 0.16.0
+
 // import "@expo/vector-icons"; // 5.2.0
 
 export default class App extends Component {
@@ -16,10 +18,21 @@ export default class App extends Component {
       starCount: rating
     });
   }
+  static navigationOptions = {
+      headerStyle: { backgroundColor: 'black',paddingTop:22,height:75},
+      headerTitleStyle: { color: 'white', textAlign: 'center', alignSelf: 'center' },
+      headerLeft: <TouchableHighlight style={{height:50, width:60, }} >
+          <View style={{marginTop:10,}}><Icon
+              name="menu"
+              size={30}
+              color={'white'}
+            /></View>
+        </TouchableHighlight>,
+      };
 
   render() {
     return (
-      <View>
+      <ScrollView>
        <View>
          <TextInput
           multiline = {true}
@@ -41,12 +54,12 @@ export default class App extends Component {
        </View>
 
        <View  style={styles.buttonStyle}>
-          <TouchableHighlight style={{backgroundColor:'#05AADA',height:60,alignItems:'center',justifyContent:'center'}}
+          <TouchableHighlight style={{backgroundColor:'#05AADA',height:60,alignItems:'center',justifyContent:'center',width:200,marginLeft:200}}
             onPress={() => Actions.home()}>
-            <Text style={{color:'white',fontWeight:'500',fontSize:18,}}>Submit FeedBack</Text>
+            <Text style={{color:'white',fontWeight:'500',fontSize:18,}}>Submit</Text>
           </TouchableHighlight>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -56,12 +69,12 @@ const styles = StyleSheet.create({
     height: 100,
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 50,
+    marginTop: 150,
     width: 320,
     borderColor: 'gray',
     borderWidth: 1,
   },
   buttonStyle:{
-    marginTop: 125,
+    marginTop: 225,
   }
 });

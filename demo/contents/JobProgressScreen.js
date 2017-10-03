@@ -113,6 +113,7 @@ static navigationOptions = {
       let newObj={
         requestType:obj.requestType,
         applicationID:obj.applicationID,
+        applicationCompletionTime:obj.time,
         JobProgress:stepObj
       }
 
@@ -177,6 +178,12 @@ static navigationOptions = {
     }
 
     PauseJob=()=>{
+
+
+      var today = new Date();
+      var time = today.getHours() + ":" + today.getMinutes();
+      let notificationString = this.props.applicationID +','+ 'Job has been paused by Operator '+ this.props.operatorName +',' + time;
+      this.context.socket.emit('InitiateJobPauseNotification', notificationString);
       alert('Job has been paused by you and notified to CEOT');
     }
   render() {

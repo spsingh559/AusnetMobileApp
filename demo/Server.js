@@ -81,6 +81,13 @@ socket.on('InitiateJobNotification',function(msg){
      publishClient.publish('InitiateJobNotificationRedis',msg);
 });
 
+socket.on('InitiateJobPauseNotification',function(msg){
+  console.log('notification for pause reach here');
+  console.log(msg);
+
+   publishClient.publish('InitiateJobPauseNotificationRedis',msg);
+})
+
  });
 
 //Listening to port 8081

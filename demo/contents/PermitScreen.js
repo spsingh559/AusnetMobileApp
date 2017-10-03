@@ -41,21 +41,13 @@ componentDidMount=()=>{
   let applicationID=this.props.applicationID.substring(1);
   Axios.get(restURL+':8080/api/v1/Job/applicationID/'+applicationID)
       .then(function (data,i) {
-        // onsole.log(data.data.message);
-        // data.data.message.forEach((data)=>{
-        //   if(data.applicationID==this.props.applicationID){
-        //     console.log(data);
-        //     console.log('response to permit screen');
             this.setState({jobProgressData:data.data.message[0]});
-        //   }
-        // })
       }.bind(this))
       .catch(function (error) {
         console.log(error+"error in jobDetail for status");
       });
 }
   submitPermit=()=>{
-    // alert('data submitted');
     var today = new Date();
 		var time = today.getHours() + ":" + today.getMinutes();
 
@@ -66,26 +58,14 @@ componentDidMount=()=>{
        }
      });
 
-//      console.log('remaining jobProgressData is');
-//      // console.log(arr);
      let curretStepObj={
        stepID:5,
        name:'Permit Issue',
        status:true,
        time:time
      };
-//      // let jobObj=[  stepObj,
-//      //     curretStepObj
-//      //   ];
-//      // stepObj.forEach((data,i)=>{
-//      //   if(i>curretStepObj.stepID){
-//      //     let newConData=[curretStepObj].concat(stepObj);
-//      //   }
-//      // })
      let newConData=stepObj.splice(curretStepObj.stepID-1,0,curretStepObj);
      newConData=null;
-//      // newConData[obj.stepID-1]=newConData[9];
-//      console.log(newConData);
      let newObj={
        requestType:'PermitIssued',
        applicationID:this.props.applicationID,
@@ -94,20 +74,14 @@ componentDidMount=()=>{
      }
      console.log('new object in permit screen');
      console.log(newObj);
-//
-//
-     Axios({
+ Axios({
    method: 'patch',
    url: restURL+':8080/api/v1/Job/',
    data: newObj
    })
    .then(function (data) {
-    //  currentData.JobProgress=newObj.JobProgress;
-    //  this.setState({jobProgressData:currentData});
     console.log(data);
    console.log('response from server for jobProgressData');
-   // console.log(data);
-   // console.log(data.data.message);
    Actions.JobProgressScreen({applicationID: this.props.applicationID});
    let notificationString = newObj.applicationID +','+ curretStepObj.name+',' + curretStepObj.time;
    this.context.socket.emit('InitiateJobNotification', notificationString);
@@ -115,24 +89,7 @@ componentDidMount=()=>{
    }.bind(this))
    .catch(function (error) {
    console.log(error+"error in jobDetail for status");
-   });
-//     // let permitNo=this.state.permitNo;
-// // let obj={
-// //   requestType:'Issue Permit',
-// //   permitNumber:permitNo,
-// //   JobProgress:[
-// //     {  stepID:1, name:'Job Initiated',   time:time,      status:true  	 },
-// //     {   stepID:2,   name:'CEOT Approval',      time:'N/A',      status:false    	 },
-// //     {   stepID:3, name:'Interuption Time Started',      time:'N/A',      status:false    	 },
-// //     { stepID:4,     name:'Isolation and Earthing Done',     time:'N/A',      status:false 	 },
-// //     {   stepID:5,   name:'Issue Permit',      time:'N/A',      status:false   	 },
-// //     {     stepID:6, name:'Work Started',     time:'N/A',      status:false  	 },
-// //     {  stepID:7,  name:'Work Completed',    time:'N/A',      status:false    	 },
-// //     { stepID:8,     name:'Cancel Permit',     time:'N/A',      status:false  	 },
-// //     { stepID:9,     name:'Isolation and Earthing Removed',     time:'N/A',      status:false  	 },
-// //     { stepID:10,  name:'Interruption Time Ended',     time:'N/A',      status:false }]
-// // }
-//     // Actions.pop(this.state.permitNo);
+ });
   }
   render() {
     return (

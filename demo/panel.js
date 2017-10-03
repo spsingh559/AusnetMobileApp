@@ -69,7 +69,7 @@ class Panel extends React.Component{
 
                 <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
                     <Text style={styles.title}>{titleMain}</Text>
-                      <Text style={styles.title}>{a}</Text>
+                    <Text style={styles.title}>{a}</Text>
                     <TouchableHighlight
                         style={styles.button}
                         onPress={this.toggle.bind(this)}
@@ -102,7 +102,7 @@ var styles = StyleSheet.create({
         flex    : 1,
         padding : 10,
         color   :'#2a2f43',
-        fontWeight:'bold'
+        fontWeight:'bold',
     },
     button      : {
 
