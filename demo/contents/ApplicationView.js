@@ -76,7 +76,9 @@ export default class ApplicationView extends React.Component{
     var year = dateobj.getFullYear();
     let MonthArr=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     var dates=day+ ' '+ MonthArr[month-1]+' '+ year;
-    let ComponentData=this.props.data.map((data,i)=>{
+    let ComponentData;
+    if(this.props.data.length!=0){
+    ComponentData=this.props.data.map((data,i)=>{
       return(
         <EachApplicationData
           key={data.applicationID}
@@ -86,7 +88,9 @@ export default class ApplicationView extends React.Component{
           >
         </EachApplicationData>
       )
-    })
+    })}else{
+      ComponentData=[<Text>No Jobs Available for Today</Text>]
+    }
     return(
       <ScrollView>
         <View  style={{borderBottomColor: 'grey',borderBottomWidth: 0.2,}}>

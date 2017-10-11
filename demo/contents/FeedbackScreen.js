@@ -54,7 +54,7 @@ export default class App extends Component {
        </View>
 
        <View  style={styles.buttonStyle}>
-          <TouchableHighlight style={{backgroundColor:'#05AADA',height:60,alignItems:'center',justifyContent:'center',width:200,marginLeft:200}}
+          <TouchableHighlight style={{backgroundColor:'#05AADA',height:60,alignItems:'center',justifyContent:'center',width:200,marginLeft:80}}
             onPress={() => Actions.home()}>
             <Text style={{color:'white',fontWeight:'500',fontSize:18,}}>Submit</Text>
           </TouchableHighlight>

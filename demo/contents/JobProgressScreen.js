@@ -5,30 +5,7 @@ import Axios from 'axios';
 import restURL from '../restURL';
 import JobProgressDataScreen from './JobProgressDataScreen';
 import {Actions} from "react-native-router-flux";
-// import { Icon } from 'react-native-elements';
-// import "@expo/vector-icons"; // 5.2.0
-// const list = [
-//  {
-//     name: 'Job initiated',
-//     time: '10:10',
-//  },
-//  {
-//     name: 'CEOT approval',
-//     time: '11:10',
-//  },
-//  {
-//     name: 'Intruption time started',
-//     time: '12:10',
-//  },
-//  {
-//     name: 'Isolation and earthing done',
-//     time: '13:10',
-//  },
-//  {
-//     name: 'Issue Permit',
-//     time: '14:10'
-//  },
-// ]
+
 
 export default class JobProgressScreen extends Component {
   constructor( ) {
@@ -81,6 +58,39 @@ static navigationOptions = {
           });
           this.closeActivityIndicator();
     }
+
+    notificationFunction=(applicationID,message,time)=>{
+      console.log('notificationFunction called');
+      let _id=Date.now();
+      let today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+      var yyyy = today.getFullYear();
+      let timeStamp=dd+'-'+mm+'-'+yyyy;
+
+      let notificationObj={
+        _id:Date.now(),
+        timeStamp:timeStamp,
+        applicationID:applicationID,
+        message:message,
+        time:time
+      }
+      let notificationString =notificationObj._id+','+notificationObj.timeStamp+','+ notificationObj.applicationID +','+ notificationObj.message+',' + time;
+      this.context.socket.emit('InitiateJobNotification', notificationString);
+      Axios({
+      method: 'post',
+      url: restURL+':8080/api/v1/Notification/',
+      data: notificationObj
+      })
+      .then(function (data) {
+      console.log('response from server');
+
+      }.bind(this))
+      .catch(function (error) {
+      console.log(error+"error in jobDetail for status");
+      });
+    }
+
     ProgressSubmitData=(obj)=>{
       let currentData=this.state.jobProgressData;
      let stepObj=[];
@@ -89,7 +99,7 @@ static navigationOptions = {
           stepObj.push(data);
         }
       })
-      console.log('remaining jobProgressData is');
+
       // console.log(arr);
       let curretStepObj={
         stepID:obj.stepID,
@@ -108,8 +118,6 @@ static navigationOptions = {
       let newConData=stepObj.splice(curretStepObj.stepID-1,0,curretStepObj);
       newConData=null;
       // newConData[obj.stepID-1]=newConData[9];
-      console.log('final job progressData  ready for update');
-      console.log(newConData);
       let newObj={
         requestType:obj.requestType,
         applicationID:obj.applicationID,
@@ -117,15 +125,15 @@ static navigationOptions = {
         JobProgress:stepObj
       }
 
-
+  this.notificationFunction(obj.applicationID,obj.name,obj.time);
       Axios({
     method: 'patch',
     url: restURL+':8080/api/v1/Job/',
     data: newObj
     })
     .then(function (data) {
-      let notificationString = obj.applicationID +','+ obj.name+',' + obj.time;
-      this.context.socket.emit('InitiateJobNotification', notificationString);
+      // let notificationString = obj.applicationID +','+ obj.name+',' + obj.time;
+      // this.context.socket.emit('InitiateJobNotification', notificationString);
       this.context.socket.emit('JobActivityMsg',obj.applicationID);
       currentData.JobProgress=newObj.JobProgress;
       this.setState({jobProgressData:currentData});
@@ -136,26 +144,28 @@ static navigationOptions = {
     .catch(function (error) {
     console.log(error+"error in jobDetail for status");
     });
-      console.log('final obj data ');
-      console.log(newObj);
+
 
       if(obj.stepID==10){
         this.setState({showButtton:true});
       }
+
     }
+
 
     submitJob=()=>{
       var today = new Date();
       var time = today.getHours() + ":" + today.getMinutes();
-      let notificationString = this.props.applicationID +','+ 'Job Completed'+',' + time;
-      this.context.socket.emit('InitiateJobNotification', notificationString);
-      this.context.socket.emit('JobCompletionMsg',this.props.applicationID);
+      // let notificationString = this.props.applicationID +','+ 'Job Completed'+',' + time;
+      // this.context.socket.emit('InitiateJobNotification', notificationString);
+    this.notificationFunction(this.props.applicationID,'Job Completed',time);
       // let currentData=this.state.jobProgressData;
       // currentData.status='Completed';
       let obj={
         requestType:'JobCompletion',
         applicationID:this.props.applicationID,
-        status:'Completed'
+        status:'Completed',
+        applicationCompletionTime:time
       };
 
       Axios({
@@ -164,6 +174,7 @@ static navigationOptions = {
     data: obj
     })
     .then(function (data) {
+        this.context.socket.emit('JobCompletionMsg',this.props.applicationID);
       // alert('Congratulation!! Job Has been completed');
     //   currentData.JobProgress=newObj.JobProgress;
     //   this.setState({jobProgressData:currentData});

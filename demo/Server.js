@@ -8,7 +8,7 @@ var app = express();
 const router = require('express').Router();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use('/api/v1/',require('./router'));
+// app.use('/api/v1/',require('./router'));
 
 var server = http.createServer(app);
 
@@ -36,10 +36,15 @@ io.on('connection',function(socket){
   var redisClient = redis.createClient({host:'127.0.0.1',port:6379});
   var publishClient = redis.createClient({host:'127.0.0.1',port:6379});
 redisClient.subscribe('ApprovalChanelV1');
+redisClient.subscribe('InitiateJobPauseNotificationCEOTRedis');
 redisClient.on('message', (channel, message) => {
 console.log('-----------subscribe get data----------');
+if(channel=='ApprovalChanelV1'){
 io.emit('approvalConfirmation', {message});
-console.log(message);
+console.log(message);}
+else if(channel=='InitiateJobPauseNotificationCEOTRedis'){
+  io.emit('InitiateJobPauseNotificationCEOTMobile', message);
+}
 });
 
 socket.on('notification', function(msg){

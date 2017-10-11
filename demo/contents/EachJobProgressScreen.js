@@ -43,7 +43,7 @@ export default class EachJobProgressScreen extends React.Component{
 
     this.props.ProgressSubmitData(obj);
     console.log('created object is');
-    console.log(obj);
+    // console.log(obj);
 
       this.setState({status:true});
 
@@ -54,7 +54,7 @@ export default class EachJobProgressScreen extends React.Component{
 // console.log(this.props.stepID);
 // console.log(this.props.time);
 // console.log(this.props.name);
-console.log('each job Progress screen loaded');
+// console.log('each job Progress screen loaded');
 
   if(this.state.status==true){
     return(

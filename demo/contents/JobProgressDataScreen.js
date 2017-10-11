@@ -9,7 +9,7 @@ export default class JobProgressDataScreen extends React.Component{
   }
   render(){
     let applicationID=this.props.data.applicationID;
-    console.log(this.props.data.JobProgress);
+    // console.log(this.props.data.JobProgress);
     console.log('applicationID'+ applicationID);
     if(this.props.data.JobProgress!=undefined){
     var newData=this.props.data.JobProgress.map((res)=>{

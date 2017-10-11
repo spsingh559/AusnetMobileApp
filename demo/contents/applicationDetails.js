@@ -31,7 +31,7 @@ class ApplicationDetails extends React.Component {
         /></View>
      </TouchableHighlight>,
   };
-  
+
   static get contextTypes() {
 	      return {
 	        socket:React.PropTypes.object.isRequired
@@ -57,6 +57,12 @@ class ApplicationDetails extends React.Component {
 
   operatorData=(obj,time)=>{
     console.log(obj);
+    let _id=Date.now();
+    let today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    let timeStamp=dd+'-'+mm+'-'+yyyy;
     Axios({
   method: 'patch',
   url: restURL+':8080/api/v1/Job/',
@@ -65,12 +71,30 @@ class ApplicationDetails extends React.Component {
 .then(function (data) {
   console.log('response from server');
   this.context.socket.emit('InitiateJobRequest',obj.applicationID);
-  let notificationString = obj.applicationID +','+ 'Job Initiated'+',' + time;
-  this.context.socket.emit('InitiateJobNotification', notificationString);
-  // console.log(data);
 }.bind(this))
 .catch(function (error) {
   console.log(error+"error in jobDetail for status");
+});
+
+let notificationObj={
+  _id:Date.now(),
+  timeStamp:timeStamp,
+  applicationID:obj.applicationID,
+  message:'Job Initiated',
+  time:time
+}
+Axios({
+method: 'post',
+url: restURL+':8080/api/v1/Notification/',
+data: notificationObj
+})
+.then(function (data) {
+console.log('response from server');
+let notificationString =notificationObj._id+','+notificationObj.timeStamp+','+ obj.applicationID +','+ 'Job Initiated'+',' + time;
+this.context.socket.emit('InitiateJobNotification', notificationString);
+}.bind(this))
+.catch(function (error) {
+console.log(error+"error in jobDetail for status");
 });
 
   }

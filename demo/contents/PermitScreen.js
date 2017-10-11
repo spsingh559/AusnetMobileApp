@@ -47,6 +47,39 @@ componentDidMount=()=>{
         console.log(error+"error in jobDetail for status");
       });
 }
+
+notificationFunction=(applicationID,message,time)=>{
+  console.log('notificationFunction called');
+  let _id=Date.now();
+  let today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+  let timeStamp=dd+'-'+mm+'-'+yyyy;
+
+  let notificationObj={
+    _id:Date.now(),
+    timeStamp:timeStamp,
+    applicationID:applicationID,
+    message:message,
+    time:time
+  }
+  let notificationString =notificationObj._id+','+notificationObj.timeStamp+','+ notificationObj.applicationID +','+ notificationObj.message+',' + time;
+  this.context.socket.emit('InitiateJobNotification', notificationString);
+  Axios({
+  method: 'post',
+  url: restURL+':8080/api/v1/Notification/',
+  data: notificationObj
+  })
+  .then(function (data) {
+  console.log('response from server');
+
+  }.bind(this))
+  .catch(function (error) {
+  console.log(error+"error in jobDetail for status");
+  });
+}
+
   submitPermit=()=>{
     var today = new Date();
 		var time = today.getHours() + ":" + today.getMinutes();
@@ -72,8 +105,9 @@ componentDidMount=()=>{
        permitNumber:this.state.permitNo,
        JobProgress:stepObj
      }
-     console.log('new object in permit screen');
-     console.log(newObj);
+    //  console.log('new object in permit screen');
+    //  console.log(newObj);
+     this.notificationFunction(newObj.applicationID,curretStepObj.name,curretStepObj.time);
  Axios({
    method: 'patch',
    url: restURL+':8080/api/v1/Job/',
@@ -83,8 +117,8 @@ componentDidMount=()=>{
     console.log(data);
    console.log('response from server for jobProgressData');
    Actions.JobProgressScreen({applicationID: this.props.applicationID});
-   let notificationString = newObj.applicationID +','+ curretStepObj.name+',' + curretStepObj.time;
-   this.context.socket.emit('InitiateJobNotification', notificationString);
+  //  let notificationString = newObj.applicationID +','+ curretStepObj.name+',' + curretStepObj.time;
+  //  this.context.socket.emit('InitiateJobNotification', notificationString);
    this.context.socket.emit('JobActivityMsg',newObj.applicationID);
    }.bind(this))
    .catch(function (error) {
